@@ -1,0 +1,36 @@
+Bundling
+Modern React apps have lots of files: components, JS modules, CSS, images, etc.
+Browsers can't efficiently load hundreds of separate files.
+Bundling combines all these files into one or a few optimized files (called bundles) that the browser can load quickly.
+
+
+Webpack is a module bundler for JavaScript applications. 
+It takes all your JS files, CSS, images, and other assets, processes them with loaders and plugins, 
+and bundles them into one or more files that the browser can use. 
+
+
+Webpack inside CRA (create-react-app)
+Even if we didn't configure it manually, CRA uses Webpack under the hood:
+
+1. Entry Point
+CRA's entry point is usually src/index.js.
+Webpack starts here and scans all imported modules (JS, CSS, images).
+
+2. Modules
+Every file you import becomes a module.
+Webpack treats them as a dependency graph.
+
+3. Loaders
+Webpack uses loaders to transform files:
+Babel Loader → converts JSX/ES6 to browser-compatible JS.
+CSS Loader → allows importing CSS in JS files.
+File Loader → handles images and fonts.
+
+4. Plugins
+Enhances functionality:
+-Generate index.html with the bundle.
+-Optimize performance.
+
+5. Output (Bundle)
+Webpack generates one or more bundle files, usually in the build/ folder when you run npm run build.
+Example: main.[hash].js contains all JS code.

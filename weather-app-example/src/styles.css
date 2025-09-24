@@ -1,0 +1,100 @@
+body {
+  margin: 0;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(135deg, #74ebd5 0%, #9face6 100%);
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Main App container */
+.app-container {
+  background: #ffffffdd; /* translucent white */
+  backdrop-filter: blur(8px);
+  padding: 30px;
+  border-radius: 16px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+  text-align: center;
+  width: 350px;
+  animation: fadeIn 0.6s ease-in-out;
+}
+
+/* Title */
+.app-container h1 {
+  font-size: 1.6rem;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+/* Form */
+form {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+form input {
+  flex: 1;
+  padding: 10px;
+  border: 2px solid #9face6;
+  border-radius: 8px 0 0 8px;
+  outline: none;
+  font-size: 1rem;
+}
+
+form button {
+  background: #9face6;
+  color: white;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 0 8px 8px 0;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+form button:hover {
+  background: #7e8ee6;
+}
+
+/* Weather Display */
+.weather-display {
+  background: #f9f9f9;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.05);
+}
+
+.weather-display h2 {
+  margin: 0;
+  font-size: 1.4rem;
+  color: #444;
+}
+
+.weather-display p {
+  margin: 8px 0;
+  font-size: 1rem;
+  color: #555;
+}
+
+/* Error Message */
+p[style*="red"] {
+  background: #ffe6e6;
+  border: 1px solid #ff4d4d;
+  padding: 10px;
+  border-radius: 8px;
+  color: #d8000c !important;
+}
+
+/* Fade-in animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

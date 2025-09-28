@@ -25,36 +25,37 @@ import "./styles.css";
 */
 function App() {
 
-  /* MVC - Model-View-Controller
+/* MVC - Model-View-Controller
   MVC is a software design pattern that separates an application into three interconnected components 
   to separate data, UI and Logic .
 
-Components:
-1. Model
+  Components:
+  1. Model
   Represents the data and business logic of the application.
   Responsible for fetching, updating, and validating data.
   In React, this could be your state or data stored in Redux/Context.
 
-2. View
+  2. View
   Represents the UI (user interface).
   Displays data from the model to the user.
   In React, this is usually the JSX in components.
 
-3. Controller
+  3. Controller
   Handles user interactions.
   Receives input from the View, processes it, and updates the Model.
 
 
-In our Program, state of the reducer defined below acts as model
-it stores current action and its payload
+  In our Program, state of the reducer defined below acts as model
+  it stores current action and its payload
 
-WeatherDisplay.js acts as View
-it displays the fetched data on the App
+  WeatherDisplay.js acts as View
+  it displays the fetched data on the App
 
-WeatherController.js acts as Controller
-it handles fetching and updating the data
+  WeatherController.js acts as Controller
+  it handles fetching and updating the data
 
 */
+  
   const [state, dispatch] = useReducer(weatherReducer, initialState);
   
   /* Flux

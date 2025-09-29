@@ -1,6 +1,3 @@
-// Dashboard.js - Main Dashboard Component
-// Concepts Covered: Functional Components, useState Hook, useEffect Hook, MVC Integration
-
 import React, { useState, useEffect } from 'react';
 import { taskController, memberController, formatDate } from '../utils';
 
@@ -123,10 +120,6 @@ const Dashboard = () => {
 
       {/* Statistics Grid */}
       <div className="stats-grid">
-        {/* 
-          CONCEPT: Rendering Dynamic Content
-          Each stat card shows how to use state values in JSX
-        */}
         <div className="stat-card">
           <div className="stat-number">{stats.total}</div>
           <div className="stat-label">Total Tasks</div>
@@ -168,10 +161,6 @@ const Dashboard = () => {
             <span>Completion Rate</span>
             <span>{stats.completionRate}%</span>
           </div>
-          {/* 
-            CONCEPT: Dynamic Styling
-            CSS styles that change based on state values
-          */}
           <div style={{ 
             width: '100%', 
             height: '20px', 
@@ -209,19 +198,10 @@ const Dashboard = () => {
       {/* Recent Tasks Section */}
       <div className="card">
         <h2>Recent Tasks</h2>
-        {/* 
-          CONCEPT: Conditional Rendering with Arrays
-          Show different content based on whether we have data
-        */}
         {recentTasks.length === 0 ? (
           <p style={{ color: '#666', fontStyle: 'italic' }}>No tasks created yet.</p>
         ) : (
           <div>
-            {/* 
-              CONCEPT: Array Mapping in JSX
-              Transform array data into JSX elements
-              Each element needs a unique key prop
-            */}
             {recentTasks.map(task => (
               <div 
                 key={task.id}
@@ -260,27 +240,7 @@ const Dashboard = () => {
           </div>
         )}
       </div>
-
-      {/* Quick Actions */}
-      <div className="card">
-        <h2>Quick Actions</h2>
-        <div className="quick-actions-buttons">
-          <button className="btn btn-primary">
-            Create New Task
-          </button>
-          <button className="btn btn-success">
-            Add Team Member
-          </button>
-          <button className="btn btn-secondary">
-            View All Tasks
-          </button>
-          <button className="btn btn-secondary">
-            Generate Report
-          </button>
-        </div>
-      </div>
     </div>
-
   );
 };
 

@@ -28,7 +28,7 @@ const useTasks = () => {
   const createTask = (taskData) => {
     try {
       const newTask = taskController.createTask(taskData);
-      setTasks(prev => [...prev, newTask]);
+      loadTasks();
       return newTask;
     } catch (err) {
       setError('Failed to create task');
@@ -40,9 +40,7 @@ const useTasks = () => {
     try {
       const updatedTask = taskController.updateTask(id, updates);
       if (updatedTask) {
-        setTasks(prev => prev.map(task => 
-          task.id === id ? updatedTask : task
-        ));
+        loadTasks();
       }
       return updatedTask;
     } catch (err) {
@@ -55,7 +53,7 @@ const useTasks = () => {
     try {
       const deletedTask = taskController.deleteTask(id);
       if (deletedTask) {
-        setTasks(prev => prev.filter(task => task.id !== id));
+        loadTasks();
       }
       return deletedTask;
     } catch (err) {

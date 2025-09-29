@@ -150,18 +150,6 @@ const TeamMembers = () => {
     setFormErrors({});
   };
 
-  // MVC Controller Integration - Update member role
-  const handleRoleChange = (memberId, newRole) => {
-    try {
-      const updatedMember = memberController.updateMember(memberId, { role: newRole });
-      setMembers(prev => prev.map(member => 
-        member.id === memberId ? updatedMember : member
-      ));
-    } catch (error) {
-      console.error('Error updating role:', error);
-    }
-  };
-
   if (loading) {
     return <div className="card">Loading team members...</div>;
   }
@@ -275,7 +263,6 @@ const TeamMembers = () => {
                   <th>Email</th>
                   <th>Role</th>
                   <th>Joined</th>
-                  <th>Status</th>
                   <th>Actions</th>
                 </tr>
               </thead>
@@ -303,36 +290,22 @@ const TeamMembers = () => {
                     </td>
                     <td>{member.email}</td>
                     <td>
-                      <select
-                        value={member.role}
-                        onChange={(e) => handleRoleChange(member.id, e.target.value)}
-                        style={{ 
-                          border: 'none', 
-                          background: 'transparent',
-                          color: member.role === 'manager' ? '#e74c3c' : 
-                                 member.role === 'lead' ? '#f39c12' : '#27ae60',
-                          fontWeight: 'bold'
-                        }}
-                      >
-                        <option value="member">Member</option>
-                        <option value="lead">Team Lead</option>
-                        <option value="manager">Manager</option>
-                      </select>
-                    </td>
-                    <td style={{ color: '#666' }}>
-                      {formatDate(member.joinedAt)}
-                    </td>
-                    <td>
                       <span style={{ 
-                        padding: '0.25rem 0.5rem',
+                        padding: '0.25rem 0.75rem',
                         borderRadius: '12px',
                         fontSize: '0.8rem',
                         fontWeight: 'bold',
-                        background: member.isActive ? '#e8f5e8' : '#fdf2f2',
-                        color: member.isActive ? '#388e3c' : '#d32f2f'
+                        background: member.role === 'manager' ? '#fdf2f2' : 
+                                   member.role === 'lead' ? '#fff3e0' : '#e8f5e8',
+                        color: member.role === 'manager' ? '#d32f2f' : 
+                               member.role === 'lead' ? '#ef6c00' : '#388e3c'
                       }}>
-                        {member.isActive ? 'Active' : 'Inactive'}
+                        {member.role === 'manager' ? 'Manager' : 
+                         member.role === 'lead' ? 'Team Lead' : 'Member'}
                       </span>
+                    </td>
+                    <td style={{ color: '#666' }}>
+                      {formatDate(member.joinedAt)}
                     </td>
                     <td>
                       <div style={{ display: 'flex', gap: '0.5rem' }}>
@@ -386,9 +359,9 @@ const TeamMembers = () => {
           </div>
           <div className="stat-card">
             <div className="stat-number" style={{ color: '#27ae60' }}>
-              {members.filter(m => m.isActive).length}
+              {members.length}
             </div>
-            <div className="stat-label">Active</div>
+            <div className="stat-label">Total</div>
           </div>
         </div>
       </div>

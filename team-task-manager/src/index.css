@@ -385,8 +385,9 @@ nav a.active {
   text-transform: uppercase;
   letter-spacing: 0.05em;
   display: inline-block;
-  min-width: 80px;
+  min-width: 100px;
   text-align: center;
+  white-space: nowrap; /* Prevent text wrapping */
 }
 
 .status-todo {

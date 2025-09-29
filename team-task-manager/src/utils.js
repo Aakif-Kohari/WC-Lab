@@ -32,14 +32,21 @@ class Task {
   }
 
   updateTask(updates) {
+    if (updates.status !== undefined) {
+      const ok = this.updateStatus(updates.status);
+      if (!ok) {
+        throw new Error(`Invalid status: ${updates.status}`);
+      }
+    }
+
     const allowedFields = ['title', 'description', 'assignee', 'priority', 'dueDate'];
-    
+
     Object.keys(updates).forEach(key => {
       if (allowedFields.includes(key) && updates[key] !== undefined) {
         this[key] = updates[key];
       }
     });
-    
+
     this.updatedAt = new Date();
   }
 

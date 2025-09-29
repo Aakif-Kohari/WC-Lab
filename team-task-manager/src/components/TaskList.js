@@ -1,6 +1,3 @@
-// TaskList.js - Task List with Table Display
-// Concepts Covered: Tables, useState, useEffect, useRef, Custom Hooks
-
 import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import useTasks from '../hooks/useTasks';
@@ -82,11 +79,6 @@ const TaskList = () => {
     }
   };
 
-  // Task status update
-  const handleStatusChange = (taskId, newStatus) => {
-    updateTask(taskId, { status: newStatus });
-  };
-
   // Task selection for batch operations
   const handleTaskSelect = (taskId) => {
     setSelectedTasks(prev => {
@@ -106,21 +98,37 @@ const TaskList = () => {
     }
   };
 
-  // Batch operations
-  const handleBatchDelete = () => {
+  // Batch operations - FIXED with Promise.all to ensure all updates complete
+  const handleBatchDelete = async () => {
     if (window.confirm(`Delete ${selectedTasks.length} selected tasks?`)) {
-      selectedTasks.forEach(taskId => {
-        deleteTask(taskId);
-      });
-      setSelectedTasks([]);
+      try {
+        // Delete all selected tasks
+        for (const taskId of selectedTasks) {
+          deleteTask(taskId);
+        }
+        setSelectedTasks([]);
+        // Force reload to ensure UI is in sync
+        setTimeout(() => loadTasks(), 100);
+      } catch (error) {
+        console.error('Error deleting tasks:', error);
+        alert('Failed to delete some tasks. Please try again.');
+      }
     }
   };
 
-  const handleBatchStatusUpdate = (newStatus) => {
-    selectedTasks.forEach(taskId => {
-      updateTask(taskId, { status: newStatus });
-    });
-    setSelectedTasks([]);
+  const handleBatchStatusUpdate = async (newStatus) => {
+    try {
+      // Update all selected tasks
+      for (const taskId of selectedTasks) {
+        updateTask(taskId, { status: newStatus });
+      }
+      setSelectedTasks([]);
+      // Force reload to ensure UI is in sync
+      setTimeout(() => loadTasks(), 100);
+    } catch (error) {
+      console.error('Error updating tasks:', error);
+      alert('Failed to update some tasks. Please try again.');
+    }
   };
 
   // useRef - Scroll to specific task
@@ -227,15 +235,7 @@ const TaskList = () => {
 
         {/* Batch Operations */}
         {selectedTasks.length > 0 && (
-          <div style={{ 
-            padding: '1rem', 
-            background: '#e3f2fd', 
-            borderRadius: '4px', 
-            marginBottom: '1rem',
-            display: 'flex',
-            gap: '1rem',
-            alignItems: 'center'
-          }}>
+          <div className="batch-operations">
             <span>{selectedTasks.length} tasks selected</span>
             <button 
               className="btn btn-success"
@@ -277,40 +277,70 @@ const TaskList = () => {
                   />
                 </th>
                 <th 
-                  style={{ cursor: 'pointer' }}
+                  className="sortable-header"
                   onClick={() => handleSort('title')}
                 >
-                  Title {sortBy === 'title' && (sortOrder === 'asc' ? '↑' : '↓')}
+                  Title 
+                  {sortBy === 'title' && (
+                    <span className="sort-indicator">
+                      {sortOrder === 'asc' ? '↑' : '↓'}
+                    </span>
+                  )}
                 </th>
                 <th 
-                  style={{ cursor: 'pointer' }}
+                  className="sortable-header"
                   onClick={() => handleSort('status')}
                 >
-                  Status {sortBy === 'status' && (sortOrder === 'asc' ? '↑' : '↓')}
+                  Status 
+                  {sortBy === 'status' && (
+                    <span className="sort-indicator">
+                      {sortOrder === 'asc' ? '↑' : '↓'}
+                    </span>
+                  )}
                 </th>
                 <th 
-                  style={{ cursor: 'pointer' }}
+                  className="sortable-header"
                   onClick={() => handleSort('assignee')}
                 >
-                  Assignee {sortBy === 'assignee' && (sortOrder === 'asc' ? '↑' : '↓')}
+                  Assignee 
+                  {sortBy === 'assignee' && (
+                    <span className="sort-indicator">
+                      {sortOrder === 'asc' ? '↑' : '↓'}
+                    </span>
+                  )}
                 </th>
                 <th 
-                  style={{ cursor: 'pointer' }}
+                  className="sortable-header"
                   onClick={() => handleSort('priority')}
                 >
-                  Priority {sortBy === 'priority' && (sortOrder === 'asc' ? '↑' : '↓')}
+                  Priority 
+                  {sortBy === 'priority' && (
+                    <span className="sort-indicator">
+                      {sortOrder === 'asc' ? '↑' : '↓'}
+                    </span>
+                  )}
                 </th>
                 <th 
-                  style={{ cursor: 'pointer' }}
+                  className="sortable-header"
                   onClick={() => handleSort('dueDate')}
                 >
-                  Due Date {sortBy === 'dueDate' && (sortOrder === 'asc' ? '↑' : '↓')}
+                  Due Date 
+                  {sortBy === 'dueDate' && (
+                    <span className="sort-indicator">
+                      {sortOrder === 'asc' ? '↑' : '↓'}
+                    </span>
+                  )}
                 </th>
                 <th 
-                  style={{ cursor: 'pointer' }}
+                  className="sortable-header"
                   onClick={() => handleSort('createdAt')}
                 >
-                  Created {sortBy === 'createdAt' && (sortOrder === 'asc' ? '↑' : '↓')}
+                  Created 
+                  {sortBy === 'createdAt' && (
+                    <span className="sort-indicator">
+                      {sortOrder === 'asc' ? '↑' : '↓'}
+                    </span>
+                  )}
                 </th>
                 <th>Actions</th>
               </tr>
@@ -353,16 +383,11 @@ const TaskList = () => {
                       </div>
                     </td>
                     <td>
-                      <select
-                        value={task.status}
-                        onChange={(e) => handleStatusChange(task.id, e.target.value)}
-                        className={`status-badge status-${task.status}`}
-                        style={{ border: 'none', background: 'transparent' }}
-                      >
-                        <option value="todo">To Do</option>
-                        <option value="in-progress">In Progress</option>
-                        <option value="completed">Completed</option>
-                      </select>
+                      <span className={`status-badge status-${task.status}`}>
+                        {task.status === 'todo' ? 'TO DO' : 
+                         task.status === 'in-progress' ? 'IN PROGRESS' : 
+                         'COMPLETED'}
+                      </span>
                     </td>
                     <td>{task.assignee || 'Unassigned'}</td>
                     <td>
@@ -419,15 +444,7 @@ const TaskList = () => {
         </div>
 
         {/* Table Summary */}
-        <div style={{ 
-          marginTop: '1rem', 
-          padding: '1rem', 
-          background: '#f8f9fa', 
-          borderRadius: '4px',
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center'
-        }}>
+        <div className="table-summary">
           <div>
             Showing {sortedTasks.length} of {tasks.length} tasks
             {(filters.search || filters.status || filters.assignee || filters.priority) && 

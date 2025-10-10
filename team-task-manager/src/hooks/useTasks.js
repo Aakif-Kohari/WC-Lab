@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import { taskController } from '../utils';
 
-// Custom Hook - Encapsulates task-related logic and state
 const useTasks = () => {
   const [tasks, setTasks] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -66,7 +65,6 @@ const useTasks = () => {
     return tasks.filter(task => task.status === status);
   };
 
-  // Custom hook returns an object with state and functions
   return {
     tasks,
     loading,

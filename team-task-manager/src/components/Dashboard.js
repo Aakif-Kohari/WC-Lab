@@ -23,22 +23,16 @@ const Dashboard = () => {
     completionRate: 0
   });
 
-  // State for recent tasks (shows array state management)
   const [recentTasks, setRecentTasks] = useState([]);
-  
-  // State for team members count
   const [teamCount, setTeamCount] = useState(0);
-  
-  // State for loading indicator
   const [isLoading, setIsLoading] = useState(true);
 
   // useEffect Hook - runs after component mounts (like componentDidMount)
   useEffect(() => {
-    // Load task statistics using our controller (MVC pattern)
     const taskStats = taskController.getTaskStatistics();
     setStats(taskStats);
     
-    // Load recent tasks (last 5 tasks)
+    // Load recent tasks
     const allTasks = taskController.getAllTasks();
     const recent = allTasks
       .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
@@ -86,7 +80,6 @@ const Dashboard = () => {
       <div className="card">
         <div style={{ textAlign: 'center', padding: '2rem' }}>
           <p>Loading dashboard...</p>
-          {/* You could add a loading spinner component here */}
         </div>
       </div>
     );

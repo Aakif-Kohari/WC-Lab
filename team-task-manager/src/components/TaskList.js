@@ -6,9 +6,8 @@ import { memberController, formatDate, filterTasks } from '../utils';
 const TaskList = () => {
   const navigate = useNavigate();
   
-  // Custom Hook usage
   const { tasks, loading, error, updateTask, deleteTask, loadTasks } = useTasks();
-  
+
   // useRef for table scroll management
   const tableRef = useRef(null);
   const searchInputRef = useRef(null);
@@ -31,7 +30,6 @@ const TaskList = () => {
     setTeamMembers(members);
   }, []);
 
-  // Filter and sort tasks
   const filteredTasks = filterTasks(tasks, filters);
   const sortedTasks = [...filteredTasks].sort((a, b) => {
     let aValue = a[sortBy];
@@ -49,7 +47,6 @@ const TaskList = () => {
     }
   });
 
-  // Table sorting handler
   const handleSort = (column) => {
     if (sortBy === column) {
       setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc');
